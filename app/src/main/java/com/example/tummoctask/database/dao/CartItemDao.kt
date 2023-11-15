@@ -19,7 +19,7 @@ interface CartItemDao {
     @Delete
     suspend fun deleteCartItem(item: CartItem)
 
-    @Query("SELECT SUM(quantity) FROM cart_items")
+    @Query("SELECT COALESCE(SUM(quantity), 0) FROM cart_items")
     fun getTotalCartItemCount(): Flow<Int>
 
     @Query("SELECT SUM(price) FROM cart_items")

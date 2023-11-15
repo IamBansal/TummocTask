@@ -55,8 +55,8 @@ fun CartScreen(cartViewModel: CartViewModel, navController: NavHostController) {
                 modifier = Modifier.background(
                     brush = Brush.verticalGradient(
                         colors = listOf(
-                            Color(0xFFE08C10),
-                            Color(0xFFEEC853)
+                            Color(0xFF4D67F5),
+                            Color(0xFFCBCFE7)
                         )
                     )
                 )

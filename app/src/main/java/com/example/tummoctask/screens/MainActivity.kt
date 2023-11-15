@@ -61,6 +61,7 @@ import com.example.tummoctask.model.local.CartItem
 import com.example.tummoctask.model.local.FavoriteItem
 import com.example.tummoctask.model.remote.Category
 import com.example.tummoctask.model.remote.Item
+import com.example.tummoctask.ui.theme.TummocTaskTheme
 import com.example.tummoctask.viewmodel.CartViewModel
 import com.example.tummoctask.viewmodel.CategoryViewModel
 import com.example.tummoctask.viewmodel.FavViewModel
@@ -109,7 +110,7 @@ class MainActivity : ComponentActivity() {
             e.printStackTrace()
         }
 
-        return Item(emptyList(), "", "empty", true)
+        return Item(emptyList(), "Can't fetch results", "empty", true)
     }
 }
 
@@ -128,12 +129,16 @@ fun MainScreen(
                 actions = {
                     ToolbarButtons(navController, cartViewModel)
                 },
-                colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.Transparent, titleContentColor = Color.Black, navigationIconContentColor = Color.White),
+                colors = TopAppBarDefaults.smallTopAppBarColors(
+                    containerColor = Color.Transparent,
+                    titleContentColor = Color.Black,
+                    navigationIconContentColor = Color.White
+                ),
                 modifier = Modifier.background(
                     brush = Brush.verticalGradient(
                         colors = listOf(
-                            Color(0xFFE08C10),
-                            Color(0xFFEEC853)
+                            Color(0xFF4D67F5),
+                            Color(0xFFCBCFE7)
                         )
                     )
                 )
@@ -164,7 +169,8 @@ fun ItemContent(
 
     val isExpanded = categoryViewModel.expandedStates[category.name] ?: false
 
-    val icon: ImageVector = if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown
+    val icon: ImageVector =
+        if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown
     val context = LocalContext.current
 
     Column(
@@ -176,7 +182,8 @@ fun ItemContent(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.clickable {
                 val newExpandedState = !isExpanded
-                categoryViewModel.expandedStates[category.name] = newExpandedState }
+                categoryViewModel.expandedStates[category.name] = newExpandedState
+            }
         ) {
             Text(text = category.name, fontWeight = FontWeight.Bold)
             Icon(imageVector = icon, contentDescription = null)
@@ -314,23 +321,30 @@ fun ToolbarButtons(navController: NavHostController, cartViewModel: CartViewMode
     IconButton(
         onClick = { navController.navigate("favorites") }
     ) {
-        Icon(imageVector = Icons.Default.Favorite, contentDescription = "Favorites", tint = Color.Black)
+        Icon(
+            imageVector = Icons.Default.Favorite,
+            contentDescription = "Favorites",
+            tint = Color.Black
+        )
     }
 }
 
 @Composable
 fun ToolbarWithCartIcon(cartViewModel: CartViewModel, navController: NavHostController) {
 
-    val cartItemCount by cartViewModel.itemCount.collectAsState(0)
+    val cartItemCount by cartViewModel.itemCount.collectAsState(initial = 0)
 
     Box(contentAlignment = Alignment.TopEnd) {
         IconButton(onClick = { navController.navigate("cart") }) {
-            Icon(imageVector = Icons.Default.ShoppingCart, contentDescription = "Cart", tint = Color.Black)
+            Icon(
+                imageVector = Icons.Default.ShoppingCart,
+                contentDescription = "Cart",
+                tint = Color.Black
+            )
         }
 
         Text(
             text = cartItemCount.toString(),
-//            text = "1",
             color = Color.White,
             fontSize = 12.sp,
             modifier = Modifier
@@ -338,7 +352,5 @@ fun ToolbarWithCartIcon(cartViewModel: CartViewModel, navController: NavHostCont
                 .padding(4.dp)
         )
     }
-
-//    LaunchedEffect(cartItemCount) {}
 }
 
